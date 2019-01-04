@@ -104,32 +104,34 @@ str_formated_df.loc[str_formated_df['predclass'] == ' <=50K', 'predclass'] = 0
 str_formated_df.loc[str_formated_df['predclass'] == ' <=50K.', 'predclass'] = 0
 
 
+
+    
+str_formated_df['occupation'] = str_formated_df['occupation'].apply(lambda x : str(x).strip())
+str_formated_df['native-country'] = str_formated_df['native-country'].apply(lambda x : str(x).strip())
+str_formated_df['education'] = str_formated_df['education'].apply(lambda x : str(x).strip())
+str_formated_df['marital-status'] = str_formated_df['marital-status'].apply(lambda x : str(x).strip())
+
+
 #Get list 
 cat_col = str_formated_df.select_dtypes(include=['O']).columns.tolist()
 for col in cat_col:
     print('-'*50)
     print("{} unique values are: {}".format(col,str_formated_df[col].unique()))
     #print('-'*50)
-str_formated_df['occupation'] = str_formated_df['occupation'].apply(lambda x : str(x).strip())
-str_formated_df['native-country'] = str_formated_df['native-country'].apply(lambda x : str(x).strip())
-str_formated_df['education'] = str_formated_df['education'].apply(lambda x : str(x).strip())
-str_formated_df['marital-status'] = str_formated_df['marital-status'].apply(lambda x : str(x).strip())
-
-#Select All objects df
-df_obj = df.select_dtypes(['object'])
+    
+##Select All objects df
+#df_obj = df.select_dtypes(['object'])
 
 # =============================================================================
 # Fill categorical data with mode
 # =============================================================================
-fill_cat_df = dataset_raw
-for col in cat_col:
-    fill_cat_df[col].fillna(fill_cat_df[col].mode(), inplace=True)  
+fill_cat_df = str_formated_df
+fill_cat_df = fill_cat_df.fillna(fill_cat_df.mode().iloc[0])
+#for col in cat_col:
+#    fill_cat_df[col]= fill_cat_df[col].fillna(fill_cat_df[col].mode(), inplace=True)  
+
 fill_cat_df.isnull().sum()
-
-
 # =============================================================================
 # Create dummy variable
 # =============================================================================
-
-
-
+df_with_dummy_var = pd.get_dummies(fill_cat_df,drop_first=True)
