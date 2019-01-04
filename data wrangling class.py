@@ -84,7 +84,7 @@ replce_df[['capital-gain','capital-loss','hours-per-week']].replace({np.NaN:0})
 # =============================================================================
 mean_fill_df = dataset_raw.fillna(dataset_raw.mean())
 # =============================================================================
-# d. Filling Forward or Backward
+# d. Filling Forward or Backward it willl take care of bi=oth the variable
 # To fill forward, use the methods pad or fill, and to fill backward, use bfill and backfill.
 # =============================================================================
 
